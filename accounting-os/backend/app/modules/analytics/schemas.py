@@ -6,8 +6,15 @@ class DashboardMetrics(BaseModel):
     expenses: float
     net_profit: float
     cash_balance: float
+    bank_balance: float # Added
+    cash_in_hand: float # Added
     receivables: float
     payables: float
+    monthly_revenue: float # Added
+    monthly_expenses: float # Added
+    monthly_profit: float # Added
+    gst_payable: float # Added
+    gst_credit: float # Added
 
 class TrendPoint(BaseModel):
     period: str # YYYY-MM

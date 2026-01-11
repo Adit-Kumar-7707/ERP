@@ -11,6 +11,7 @@ import LedgersPage from "./pages/ledgers/LedgersPage";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/auth/Login";
 import VoucherTypes from "./pages/settings/VoucherTypes";
+import Parties from "./pages/Parties";
 import StockItems from "./pages/inventory/StockItems";
 import StockGroups from "./pages/inventory/StockGroups";
 import CostCenters from "./pages/masters/CostCenters";
@@ -61,7 +62,9 @@ const App = () => (
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/ledgers" element={<LedgersPage />} />
                 <Route path="/vouchers/:type" element={<VoucherEntry />} />
+                <Route path="/vouchers/:type" element={<VoucherEntry />} />
                 <Route path="/settings/voucher-types" element={<VoucherTypes />} />
+                <Route path="/parties" element={<Parties />} />
 
                 {/* Inventory */}
                 <Route path="/inventory/items" element={<StockItems />} />
