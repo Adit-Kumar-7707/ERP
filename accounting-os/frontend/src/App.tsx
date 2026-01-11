@@ -20,6 +20,8 @@ import CompanyProfile from "./pages/settings/CompanyProfile";
 import Rules from "./pages/settings/Rules";
 import UsersRoles from "./pages/settings/UsersRoles";
 import UserProfile from "./pages/settings/UserProfile";
+import Reports from "./pages/Reports";
+import AuditLogs from "./pages/settings/AuditLogs";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { OrganizationProvider } from "./context/OrganizationContext";
 
@@ -76,6 +78,10 @@ const App = () => (
                 <Route path="/settings/rules" element={<Rules />} />
                 <Route path="/settings/users" element={<UsersRoles />} />
                 <Route path="/settings/profile" element={<UserProfile />} />
+
+                {/* Reports */}
+                <Route path="/reports" element={<Reports />} />
+                <Route path="/settings/audit-logs" element={<AuditLogs />} />
               </Route>
 
               {/* Catch-all */}

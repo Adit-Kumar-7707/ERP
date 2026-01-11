@@ -31,6 +31,17 @@ def create_rule(
         action=rule_in.action,
         message=rule_in.message
     )
+    
+    # Validate Condition Syntax
+    try:
+        from simpleeval import SimpleEval
+        # Mock context to check syntax
+        mock_data = {"entry": {}, "amount": 0, "voucher_number": "TEST"}
+        s = SimpleEval(names=mock_data)
+        s.eval(rule_in.condition)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Invalid Condition Syntax: {str(e)}")
+
     db.add(rule)
     db.commit()
     db.refresh(rule)

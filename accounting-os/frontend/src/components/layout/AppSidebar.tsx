@@ -29,6 +29,7 @@ import {
   HelpCircle,
   Command,
   Zap,
+  ShieldAlert,
 } from "lucide-react";
 import { Kbd } from "@/components/ui/kbd";
 import { useOrganization } from "@/context/OrganizationContext";
@@ -63,6 +64,33 @@ const navigation: NavItem[] = [
       { title: "Credit Note", href: "/vouchers/credit-note", icon: FileCheck },
       { title: "Debit Note", href: "/vouchers/debit-note", icon: Receipt },
     ],
+  },
+  {
+    title: "Vouchers",
+    href: "/vouchers",
+    icon: FileText,
+  },
+  {
+    title: "Reports",
+    href: "/reports",
+    icon: BarChart3,
+  },
+  {
+    title: "Inventory",
+    href: "/inventory",
+    icon: Package,
+    feature: 'inventory',
+    children: [
+      { title: "Stock Items", href: "/inventory/items", icon: Package },
+      { title: "Stock Groups", href: "/inventory/groups", icon: Layers },
+      { title: "Godowns", href: "/inventory/godowns", icon: Building2 },
+      { title: "Stock Journal", href: "/inventory/journal", icon: FileSpreadsheet },
+    ],
+  },
+  {
+    title: "Audit Logs",
+    href: "/settings/audit-logs",
+    icon: ShieldAlert,
   },
   {
     title: "Ledgers",

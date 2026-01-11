@@ -25,13 +25,15 @@ class RuleValidator:
         for rule in rules:
             try:
                 # SAFE EVALUATION CONTEXT
-                # We expose 'entry' as the voucher data dict
-                context = {"entry": voucher_data, "amount": voucher_data.get("amount", 0)}
+                # We expose 'entry' as the voucher data dict and 'amount'
+                # Use simpleeval for safe execution
+                from simpleeval import SimpleEval
+                
+                s = SimpleEval()
+                s.names = {"entry": voucher_data, "amount": voucher_data.get("amount", 0), "voucher_number": voucher_data.get("voucher_number")}
                 
                 # Evaluate condition
-                # WARNING: eval() is used here for MVP flexibility. 
-                # In production, use a safer expression engine like simpleeval or asteval.
-                if eval(rule.condition, {"__builtins__": None}, context):
+                if s.eval(rule.condition):
                     # Condition Met -> Rule Triggered
                     errors.append({
                         "rule_name": rule.name,

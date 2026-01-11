@@ -1,130 +1,91 @@
-import {
-  AlertTriangle,
-  Clock,
-  Package,
-  FileText,
-  ArrowRight,
-  XCircle,
-  AlertCircle,
-  Info,
-} from "lucide-react";
+import { useEffect, useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { AlertTriangle, CheckCircle, RefreshCw, XCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import api from "@/api/client";
 import { cn } from "@/lib/utils";
 
-interface Alert {
-  id: string;
-  type: "error" | "warning" | "info";
+interface AlertItem {
+  id: number;
   title: string;
-  description: string;
-  action?: {
-    label: string;
-    href: string;
-  };
-  timestamp: string;
+  message: string;
+  severity: "info" | "warning" | "critical";
+  created_at: string;
 }
 
-const alerts: Alert[] = [
-  {
-    id: "1",
-    type: "error",
-    title: "GST Return Overdue",
-    description: "GSTR-3B for December 2024 is 5 days overdue",
-    action: { label: "File Now", href: "/reports/gst" },
-    timestamp: "2h ago",
-  },
-  {
-    id: "2",
-    type: "warning",
-    title: "Negative Stock Detected",
-    description: "3 items have negative stock: SKU-001, SKU-045, SKU-089",
-    action: { label: "View Items", href: "/inventory/items" },
-    timestamp: "4h ago",
-  },
-  {
-    id: "3",
-    type: "warning",
-    title: "Receivables Overdue",
-    description: "₹2,45,000 overdue from 8 parties for more than 30 days",
-    action: { label: "View Parties", href: "/parties" },
-    timestamp: "1d ago",
-  },
-  {
-    id: "4",
-    type: "info",
-    title: "Bank Reconciliation Pending",
-    description: "15 transactions pending reconciliation in HDFC Current Account",
-    action: { label: "Reconcile", href: "/banking" },
-    timestamp: "2d ago",
-  },
-];
-
-const alertStyles = {
-  error: {
-    bg: "bg-destructive/5 border-destructive/20",
-    icon: XCircle,
-    iconColor: "text-destructive",
-  },
-  warning: {
-    bg: "bg-warning/5 border-warning/20",
-    icon: AlertTriangle,
-    iconColor: "text-warning",
-  },
-  info: {
-    bg: "bg-info/5 border-info/20",
-    icon: Info,
-    iconColor: "text-info",
-  },
-};
-
 export const AlertsWidget = () => {
+  const [alerts, setAlerts] = useState<AlertItem[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  const fetchAlerts = async () => {
+    try {
+      const res = await api.get('/analytics/alerts');
+      setAlerts(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const runScan = async () => {
+    setLoading(true);
+    try {
+      await api.post('/analytics/alerts/scan');
+      await fetchAlerts();
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchAlerts();
+  }, []);
+
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <h2 className="text-lg font-semibold">Alerts & Actions</h2>
-          <span className="px-2 py-0.5 text-xs font-medium bg-destructive/10 text-destructive rounded-full">
-            {alerts.filter((a) => a.type === "error").length}
-          </span>
+    <Card className="h-full flex flex-col">
+      <CardHeader className="flex flex-row items-center justify-between pb-2">
+        <div className="space-y-1">
+          <CardTitle className="text-base font-semibold flex items-center gap-2">
+            <AlertTriangle className="h-4 w-4 text-orange-500" />
+            Business Alerts
+          </CardTitle>
+          <CardDescription>
+            {alerts.length} active issues detected
+          </CardDescription>
         </div>
-        <button className="text-sm text-muted-foreground hover:text-foreground">
-          Mark all as read
-        </button>
-      </div>
+        <Button variant="ghost" size="icon" onClick={runScan} disabled={loading}>
+          <RefreshCw className={cn("h-4 w-4", loading && "animate-spin")} />
+        </Button>
+      </CardHeader>
+      <CardContent className="flex-1 overflow-auto space-y-4">
+        {alerts.length === 0 && (
+          <div className="flex flex-col items-center justify-center h-40 text-muted-foreground text-sm">
+            <CheckCircle className="h-8 w-8 text-green-500 mb-2" />
+            <p>All systems normal.</p>
+          </div>
+        )}
+        {alerts.map(alert => (
+          <div key={alert.id} className={cn(
+            "p-3 rounded-lg border text-sm flex gap-3",
+            alert.severity === 'critical' ? "bg-red-500/10 border-red-500/20" :
+              alert.severity === 'warning' ? "bg-orange-500/10 border-orange-500/20" : "bg-muted"
+          )}>
+            {alert.severity === 'critical' ? <XCircle className="h-5 w-5 text-red-600 shrink-0" /> :
+              alert.severity === 'warning' ? <AlertTriangle className="h-5 w-5 text-orange-600 shrink-0" /> :
+                <div className="h-5 w-5 bg-blue-500 rounded-full" />}
 
-      <div className="space-y-2">
-        {alerts.map((alert) => {
-          const style = alertStyles[alert.type];
-          const Icon = style.icon;
-
-          return (
-            <div
-              key={alert.id}
-              className={cn(
-                "flex items-start gap-3 p-4 rounded-lg border transition-colors hover:bg-muted/50",
-                style.bg
-              )}
-            >
-              <Icon className={cn("h-5 w-5 mt-0.5 flex-shrink-0", style.iconColor)} />
-              <div className="flex-1 min-w-0">
-                <div className="flex items-start justify-between gap-2">
-                  <h4 className="font-medium text-sm">{alert.title}</h4>
-                  <span className="text-xs text-muted-foreground whitespace-nowrap">
-                    {alert.timestamp}
-                  </span>
-                </div>
-                <p className="text-sm text-muted-foreground mt-0.5">
-                  {alert.description}
-                </p>
-                {alert.action && (
-                  <button className="mt-2 text-sm font-medium text-primary hover:underline inline-flex items-center gap-1">
-                    {alert.action.label}
-                    <ArrowRight className="h-3 w-3" />
-                  </button>
-                )}
-              </div>
+            <div>
+              <p className="font-medium">{alert.title}</p>
+              <p className="text-muted-foreground text-xs mt-0.5">{alert.message}</p>
+              <p className="text-[10px] text-muted-foreground mt-2">
+                {new Date(alert.created_at).toLocaleString()}
+              </p>
             </div>
-          );
-        })}
-      </div>
-    </div>
+          </div>
+        ))}
+      </CardContent>
+    </Card>
   );
 };
