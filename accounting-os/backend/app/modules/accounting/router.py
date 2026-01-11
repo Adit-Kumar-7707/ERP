@@ -189,42 +189,12 @@ def read_dashboard_stats(
         "gstCredit": gst_credit
     }
 
-@router.get("/reports/trial-balance", tags=["reports"])
-def get_trial_balance(
-    db: Session = Depends(deps.get_db),
-    current_user = Depends(deps.get_current_active_user),
-) -> Any:
-    """
-    Generate Trial Balance Report.
-    """
-    accounts = db.query(Account).all()
-    report = []
-    
-    total_debit = 0.0
-    total_credit = 0.0
-
-    for account in accounts:
-        # Sum debits and credits for this account
-        debit_sum = db.query(func.sum(JournalLine.debit)).filter(JournalLine.account_id == account.id).scalar() or 0.0
-        credit_sum = db.query(func.sum(JournalLine.credit)).filter(JournalLine.account_id == account.id).scalar() or 0.0
-        
-        balance = debit_sum - credit_sum
-        
-        report.append({
-            "account_code": account.code,
-            "account_name": account.name,
-            "account_type": account.type,
-            "debit": debit_sum,
-            "credit": credit_sum,
-            "net_balance": balance
-        })
-        
-        total_debit += debit_sum
-        total_credit += credit_sum
-
-    return {
-        "lines": report,
-        "total_debit": total_debit,
-        "total_credit": total_credit,
-        "is_balanced": abs(total_debit - total_credit) < 0.01 
-    }
+# @router.get("/reports/trial-balance", tags=["reports"])
+# def get_trial_balance_deprecated(
+#     db: Session = Depends(deps.get_db),
+#     current_user = Depends(deps.get_current_active_user),
+# ) -> Any:
+#     """
+#     DEPRECATED: Use /api/v1/reports/trial-balance instead.
+#     """
+#     return {"message": "Deprecated. Use new Reports module."}

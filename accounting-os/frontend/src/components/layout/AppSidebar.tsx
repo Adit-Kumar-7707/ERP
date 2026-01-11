@@ -66,19 +66,9 @@ const navigation: NavItem[] = [
     ],
   },
   {
-    title: "Vouchers",
-    href: "/vouchers",
-    icon: FileText,
-  },
-  {
-    title: "Reports",
-    href: "/reports",
-    icon: BarChart3,
-  },
-  {
     title: "Inventory",
-    href: "/inventory",
     icon: Package,
+    shortcut: "I",
     feature: 'inventory',
     children: [
       { title: "Stock Items", href: "/inventory/items", icon: Package },
@@ -88,26 +78,16 @@ const navigation: NavItem[] = [
     ],
   },
   {
-    title: "Audit Logs",
-    href: "/settings/audit-logs",
-    icon: ShieldAlert,
-  },
-  {
     title: "Ledgers",
     href: "/ledgers",
     icon: BookOpen,
     shortcut: "L",
   },
   {
-    title: "Inventory",
-    icon: Package,
-    shortcut: "I",
-    children: [
-      { title: "Stock Items", href: "/inventory/items", icon: Package },
-      { title: "Stock Groups", href: "/inventory/groups", icon: Layers },
-      { title: "Godowns", href: "/inventory/godowns", icon: Building2 },
-      { title: "Stock Journal", href: "/inventory/journal", icon: FileSpreadsheet },
-    ],
+    title: "Banking",
+    href: "/banking",
+    icon: CreditCard,
+    shortcut: "B",
   },
   {
     title: "Reports",
@@ -119,7 +99,7 @@ const navigation: NavItem[] = [
       { title: "Balance Sheet", href: "/reports/balance-sheet", icon: FileSpreadsheet },
       { title: "Cash Flow", href: "/reports/cash-flow", icon: IndianRupee },
       { title: "GST Reports", href: "/reports/gst", icon: Receipt },
-      { title: "Ledger Statements", href: "/reports/ledger", icon: BookOpen },
+      { title: "Audit Logs", href: "/settings/audit-logs", icon: ShieldAlert },
     ],
   },
   {
@@ -127,12 +107,6 @@ const navigation: NavItem[] = [
     href: "/parties",
     icon: Users,
     shortcut: "P",
-  },
-  {
-    title: "Banking",
-    href: "/banking",
-    icon: CreditCard,
-    shortcut: "B",
   },
 ];
 
@@ -282,7 +256,7 @@ export const AppSidebar = ({ isCollapsed, onToggle }: AppSidebarProps) => {
   return (
     <aside
       className={cn(
-        "fixed left-0 top-0 z-40 h-screen bg-sidebar border-r border-sidebar-border transition-all duration-200",
+        "fixed left-0 top-0 z-40 h-screen bg-sidebar border-r border-sidebar-border transition-all duration-200 flex flex-col",
         isCollapsed ? "w-16" : "w-64"
       )}
     >

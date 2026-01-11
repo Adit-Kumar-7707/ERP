@@ -81,6 +81,7 @@ const App = () => (
 
                 {/* Reports */}
                 <Route path="/reports" element={<Reports />} />
+                <Route path="/reports/:type" element={<Reports />} />
                 <Route path="/settings/audit-logs" element={<AuditLogs />} />
               </Route>
 
