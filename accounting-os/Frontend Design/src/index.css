@@ -1,0 +1,246 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Finance ERP Design System - Professional, Keyboard-First, Indian Market Focus */
+
+@layer base {
+  :root {
+    /* Core Background - Clean, Professional */
+    --background: 210 20% 98%;
+    --foreground: 222 47% 11%;
+
+    /* Card surfaces */
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    /* Popover/Modal */
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    /* Primary - Deep Slate Blue (Trust, Professionalism) */
+    --primary: 222 47% 20%;
+    --primary-foreground: 210 40% 98%;
+
+    /* Secondary - Subtle Gray */
+    --secondary: 214 20% 94%;
+    --secondary-foreground: 222 47% 20%;
+
+    /* Muted - For subtle backgrounds */
+    --muted: 214 20% 96%;
+    --muted-foreground: 215 16% 47%;
+
+    /* Accent - Slate Blue Accent */
+    --accent: 214 32% 91%;
+    --accent-foreground: 222 47% 11%;
+
+    /* Destructive - Financial Red */
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Success - Financial Green */
+    --success: 142 71% 35%;
+    --success-foreground: 0 0% 100%;
+
+    /* Warning - Amber */
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 0%;
+
+    /* Info - Blue */
+    --info: 199 89% 48%;
+    --info-foreground: 0 0% 100%;
+
+    /* Financial Colors */
+    --credit: 142 71% 35%;
+    --credit-foreground: 0 0% 100%;
+    --debit: 0 72% 51%;
+    --debit-foreground: 0 0% 100%;
+
+    /* Border & Input */
+    --border: 214 20% 88%;
+    --input: 214 20% 88%;
+    --ring: 222 47% 20%;
+
+    --radius: 0.5rem;
+
+    /* Sidebar */
+    --sidebar-background: 222 47% 11%;
+    --sidebar-foreground: 210 20% 90%;
+    --sidebar-primary: 210 40% 98%;
+    --sidebar-primary-foreground: 222 47% 11%;
+    --sidebar-accent: 222 40% 18%;
+    --sidebar-accent-foreground: 210 20% 98%;
+    --sidebar-border: 222 40% 20%;
+    --sidebar-ring: 199 89% 48%;
+    --sidebar-muted: 222 30% 25%;
+
+    /* Table Specific */
+    --table-header: 214 20% 96%;
+    --table-row-hover: 214 20% 97%;
+    --table-border: 214 20% 91%;
+
+    /* Focus ring for keyboard navigation */
+    --focus-ring: 199 89% 48%;
+  }
+
+  .dark {
+    --background: 222 47% 7%;
+    --foreground: 210 20% 95%;
+
+    --card: 222 47% 10%;
+    --card-foreground: 210 20% 95%;
+
+    --popover: 222 47% 10%;
+    --popover-foreground: 210 20% 95%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222 47% 11%;
+
+    --secondary: 222 40% 18%;
+    --secondary-foreground: 210 20% 95%;
+
+    --muted: 222 40% 15%;
+    --muted-foreground: 215 16% 60%;
+
+    --accent: 222 40% 20%;
+    --accent-foreground: 210 20% 95%;
+
+    --destructive: 0 62% 45%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 142 60% 40%;
+    --success-foreground: 0 0% 100%;
+
+    --warning: 38 80% 50%;
+    --warning-foreground: 0 0% 0%;
+
+    --info: 199 80% 50%;
+    --info-foreground: 0 0% 100%;
+
+    --credit: 142 60% 40%;
+    --credit-foreground: 0 0% 100%;
+    --debit: 0 62% 50%;
+    --debit-foreground: 0 0% 100%;
+
+    --border: 222 40% 20%;
+    --input: 222 40% 20%;
+    --ring: 210 40% 98%;
+
+    --sidebar-background: 222 47% 5%;
+    --sidebar-foreground: 210 20% 85%;
+    --sidebar-primary: 210 40% 98%;
+    --sidebar-primary-foreground: 222 47% 11%;
+    --sidebar-accent: 222 40% 12%;
+    --sidebar-accent-foreground: 210 20% 95%;
+    --sidebar-border: 222 40% 15%;
+    --sidebar-ring: 199 89% 48%;
+    --sidebar-muted: 222 30% 20%;
+
+    --table-header: 222 40% 12%;
+    --table-row-hover: 222 40% 14%;
+    --table-border: 222 40% 18%;
+
+    --focus-ring: 199 89% 48%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Keyboard focus styles */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-offset-2;
+    ring-color: hsl(var(--focus-ring));
+    ring-offset-color: hsl(var(--background));
+  }
+
+  /* Number inputs - monospace for alignment */
+  input[type="number"],
+  .font-mono {
+    font-feature-settings: "tnum";
+  }
+}
+
+@layer components {
+  /* Financial number formatting */
+  .amount-credit {
+    @apply text-credit font-medium;
+  }
+
+  .amount-debit {
+    @apply text-debit font-medium;
+  }
+
+  /* Keyboard shortcut hints */
+  .kbd {
+    @apply inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-medium rounded border bg-muted text-muted-foreground;
+    min-width: 1.5rem;
+  }
+
+  /* Table row selection */
+  .table-row-selected {
+    @apply bg-accent;
+  }
+
+  /* Module card styling */
+  .module-card {
+    @apply bg-card border rounded-lg p-4 transition-all duration-150;
+  }
+
+  .module-card:hover {
+    @apply border-primary/30 shadow-sm;
+  }
+
+  /* Stat card */
+  .stat-card {
+    @apply bg-card border rounded-lg p-5;
+  }
+
+  /* Voucher entry row */
+  .voucher-row {
+    @apply flex items-center gap-2 py-2 px-3 border-b border-table-border;
+  }
+
+  .voucher-row:focus-within {
+    @apply bg-accent/50;
+  }
+}
+
+@layer utilities {
+  /* Indian number formatting helper */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Smooth scrolling for main areas */
+  .scroll-smooth {
+    scroll-behavior: smooth;
+  }
+
+  /* Hide scrollbar but keep functionality */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted-foreground) / 0.3) transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--muted-foreground) / 0.3);
+    border-radius: 3px;
+  }
+}
