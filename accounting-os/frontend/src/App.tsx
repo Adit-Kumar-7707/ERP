@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { MainLayout } from "./components/layout/MainLayout";
 import Dashboard from "./pages/Dashboard";
-import CompanySetup from "./pages/onboarding/CompanySetup";
+import OnboardingWizard from "./pages/onboarding/OnboardingWizard";
 import VoucherEntry from "./pages/vouchers/VoucherEntry";
 import LedgersPage from "./pages/ledgers/LedgersPage";
 import NotFound from "./pages/NotFound";
@@ -24,7 +24,7 @@ import UserProfile from "./pages/settings/UserProfile";
 import Reports from "./pages/Reports";
 import AuditLogs from "./pages/settings/AuditLogs";
 import { AuthProvider, useAuth } from "./context/AuthContext";
-import { OrganizationProvider } from "./context/OrganizationContext";
+import { OrganizationProvider, useOrganization } from "./context/OrganizationContext";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +32,29 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated, isLoading } = useAuth();
   if (isLoading) return <div>Loading...</div>;
   if (!isAuthenticated) return <Navigate to="/login" />;
+  return <>{children}</>;
+};
+
+const OnboardingGuard = ({ children }: { children: React.ReactNode }) => {
+  const { org, isLoading } = useOrganization();
+  // If loading, wait
+  if (isLoading) return <div className="h-screen flex items-center justify-center">Loading...</div>;
+
+  // If no org or onboarding not complete, redirect to setup
+  // Note: We check if org exists. If not, or if flag is false.
+  if (!org?.is_onboarding_completed) {
+    return <Navigate to="/setup" replace />;
+  }
+  return <>{children}</>;
+};
+
+const SetupGuard = ({ children }: { children: React.ReactNode }) => {
+  const { org, isLoading } = useOrganization();
+  if (isLoading) return <div>Loading...</div>;
+  // If onboarding is ALREADY complete, go to dashboard
+  if (org?.is_onboarding_completed) {
+    return <Navigate to="/" replace />;
+  }
   return <>{children}</>;
 };
 
@@ -46,22 +69,25 @@ const App = () => (
             <Routes>
               <Route path="/login" element={<Login />} />
 
-              {/* Onboarding */}
+              {/* Onboarding - Protected by Auth, but guarded AGAINST completed users */}
               <Route path="/setup" element={
                 <ProtectedRoute>
-                  <CompanySetup />
+                  <SetupGuard>
+                    <OnboardingWizard />
+                  </SetupGuard>
                 </ProtectedRoute>
               } />
 
-              {/* Main App with Layout */}
+              {/* Main App - Protected by Auth AND Onboarding */}
               <Route element={
                 <ProtectedRoute>
-                  <MainLayout />
+                  <OnboardingGuard>
+                    <MainLayout />
+                  </OnboardingGuard>
                 </ProtectedRoute>
               }>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/ledgers" element={<LedgersPage />} />
-                <Route path="/vouchers/:type" element={<VoucherEntry />} />
                 <Route path="/vouchers/:type" element={<VoucherEntry />} />
                 <Route path="/settings/voucher-types" element={<VoucherTypes />} />
                 <Route path="/parties" element={<Parties />} />

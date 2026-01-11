@@ -13,12 +13,16 @@ interface Organization {
     name: string;
     features: OrganizationFeatures;
     currency_symbol: string;
+    is_onboarding_completed: boolean; // Added
 }
 
 interface OrganizationContextType {
-    organization: Organization | null;
-    loading: boolean;
+    org: Organization | null;
+    organization: Organization | null; // Deprecated alias
+    isLoading: boolean;
+    loading: boolean; // Deprecated alias
     refreshOrganization: () => Promise<void>;
+    refreshOrg: () => Promise<void>;
     hasFeature: (feature: keyof OrganizationFeatures) => boolean;
 }
 
@@ -61,7 +65,15 @@ export const OrganizationProvider: React.FC<{ children: React.ReactNode }> = ({ 
     };
 
     return (
-        <OrganizationContext.Provider value={{ organization, loading, refreshOrganization, hasFeature }}>
+        <OrganizationContext.Provider value={{
+            organization,
+            org: organization,
+            loading,
+            isLoading: loading,
+            refreshOrganization,
+            refreshOrg: refreshOrganization,
+            hasFeature
+        }}>
             {children}
         </OrganizationContext.Provider>
     );

@@ -18,3 +18,8 @@ class Organization(Base):
     gstin = Column(String, nullable=True)
     email = Column(String, nullable=True)
     website = Column(String, nullable=True)
+
+    # Onboarding Fields
+    business_type = Column(String, nullable=True) # Retail, Service, Trading
+    state = Column(String, nullable=True)
+    is_onboarding_completed = Column(Boolean, default=False)

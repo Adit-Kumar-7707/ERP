@@ -29,6 +29,7 @@ from app.modules.rules.router import router as rules_router
 from app.modules.analytics.router import router as analytics_router
 from app.modules.reports.router import router as reports_router
 from app.modules.audit.router import router as audit_router
+from app.modules.onboarding.router import router as onboarding_router
 
 # Ensure models are imported for metadata creation
 Base.metadata.create_all(bind=engine)
@@ -58,6 +59,7 @@ app.include_router(rules_router, prefix=f"{settings.API_V1_STR}/rules", tags=["r
 app.include_router(analytics_router, prefix=f"{settings.API_V1_STR}/analytics", tags=["analytics"])
 app.include_router(reports_router, prefix=f"{settings.API_V1_STR}/reports", tags=["reports"])
 app.include_router(audit_router, prefix=f"{settings.API_V1_STR}/audit", tags=["audit"])
+app.include_router(onboarding_router, prefix=f"{settings.API_V1_STR}/onboarding", tags=["onboarding"])
 
 @app.get("/")
 def root():

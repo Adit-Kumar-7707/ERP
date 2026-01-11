@@ -10,6 +10,9 @@ class OrganizationBase(BaseModel):
     gstin: Optional[str] = None
     email: Optional[str] = None
     website: Optional[str] = None
+    business_type: Optional[str] = None
+    state: Optional[str] = None
+    is_onboarding_completed: bool = False
 
 class OrganizationCreate(OrganizationBase):
     pass
@@ -22,6 +25,9 @@ class OrganizationUpdate(BaseModel):
     gstin: Optional[str] = None
     email: Optional[str] = None
     website: Optional[str] = None
+    business_type: Optional[str] = None
+    state: Optional[str] = None
+    is_onboarding_completed: Optional[bool] = None
 
 class Organization(OrganizationBase):
     id: int
