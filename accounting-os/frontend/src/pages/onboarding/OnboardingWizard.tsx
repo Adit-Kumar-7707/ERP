@@ -67,11 +67,12 @@ const OnboardingWizard = () => {
             // Force reload or navigate
             navigate("/");
             window.location.reload(); // Safety to ensure all contexts re-init
-        } catch (error) {
+        } catch (error: any) {
             console.error("Setup failed", error);
+            const msg = error.response?.data?.detail || "Please check your inputs and try again.";
             toast({
                 title: "Setup Failed",
-                description: "Please check your inputs and try again.",
+                description: msg,
                 variant: "destructive"
             });
         } finally {

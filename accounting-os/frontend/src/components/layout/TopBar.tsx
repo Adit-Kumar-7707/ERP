@@ -28,6 +28,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { usePeriod } from "@/contexts/PeriodContext";
 
 const shortcuts = [
   { keys: ["Alt", "V"], action: "Voucher Entry" },
@@ -40,6 +41,7 @@ const shortcuts = [
 
 export const TopBar = () => {
   const [searchOpen, setSearchOpen] = useState(false);
+  const { fromDate, toDate, formatDate, openDialog } = usePeriod();
 
   return (
     <header className="h-14 bg-card border-b border-border flex items-center justify-between px-4 sticky top-0 z-30">
@@ -72,10 +74,16 @@ export const TopBar = () => {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <Button
+          variant="ghost"
+          className="flex items-center gap-2 h-9 text-muted-foreground hover:text-foreground"
+          onClick={openDialog}
+          title="Change Period (Alt+F2)"
+        >
           <Calendar className="h-4 w-4" />
-          <span>FY 2024-25</span>
-        </div>
+          <span className="text-sm hidden md:inline">{formatDate(fromDate)} to {formatDate(toDate)}</span>
+          <span className="text-sm md:hidden">Period</span>
+        </Button>
       </div>
 
       {/* Center - Search */}

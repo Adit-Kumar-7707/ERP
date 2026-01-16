@@ -22,7 +22,27 @@ class Account(Base):
     children = relationship("Account", 
                 backref=backref('parent', remote_side=[id]),
                 cascade="all, delete-orphan")
-    is_group = Column(Integer, default=False) # Using Integer as Boolean (0/1) for SQLite compatibility if needed, or just Boolean is fine in SQLAlchemy (maps to 0/1 in SQLite)
+    is_group = Column(Integer, default=False) 
+    
+    # GST / Compliance
+    gst_number = Column(String, nullable=True)
+    state_code = Column(String, nullable=True)
+    is_registered = Column(Boolean, default=False)
+    
+    # Safety
+    is_deleted = Column(Boolean, default=False)
+
+class FinancialYear(Base):
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, unique=True, index=True, nullable=False) # e.g. "FY 2024-25"
+    start_date = Column(Date, nullable=False)
+    end_date = Column(Date, nullable=False)
+    is_active = Column(Boolean, default=True)
+    is_closed = Column(Boolean, default=False)
+    
+    # Locking
+    is_locked = Column(Boolean, default=False) # Global lock
+    locked_upto = Column(Date, nullable=True) # Lock entries before this date
 
 class JournalEntry(Base):
     id = Column(Integer, primary_key=True, index=True)
@@ -31,12 +51,19 @@ class JournalEntry(Base):
     reference = Column(String, nullable=True)
     narration = Column(Text, nullable=True)
     
+    # Part 1: Hardening Fields
+    financial_year_id = Column(Integer, ForeignKey('financialyear.id'), nullable=True, index=True) # Nullable for migration/old data, but logic should enforce
+    is_opening = Column(Boolean, default=False)
+    is_system_entry = Column(Boolean, default=False) # Computed entries (Closing, Depreciation)
+    is_locked = Column(Boolean, default=False) # Individual lock
+    
+    financial_year = relationship("FinancialYear")
     lines = relationship("JournalLine", back_populates="entry", cascade="all, delete-orphan")
 
 class JournalLine(Base):
     id = Column(Integer, primary_key=True, index=True)
-    entry_id = Column(Integer, ForeignKey("journalentry.id"), nullable=False)
-    account_id = Column(Integer, ForeignKey("account.id"), nullable=False)
+    entry_id = Column(Integer, ForeignKey("journalentry.id"), nullable=False, index=True)
+    account_id = Column(Integer, ForeignKey("account.id"), nullable=False, index=True)
     description = Column(String, nullable=True)
     debit = Column(Float, default=0.0)
     credit = Column(Float, default=0.0)

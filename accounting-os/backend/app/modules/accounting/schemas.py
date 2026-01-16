@@ -43,6 +43,8 @@ class JournalEntryBase(BaseModel):
     voucher_type: str
     reference: Optional[str] = None
     narration: Optional[str] = None
+    financial_year_id: Optional[int] = None
+    is_opening: bool = False
 
 class JournalEntryCreate(JournalEntryBase):
     lines: List[JournalLineCreate]
@@ -58,6 +60,8 @@ class JournalEntryCreate(JournalEntryBase):
 class JournalEntry(JournalEntryBase):
     id: int
     lines: List[JournalLine] = []
+    is_system_entry: bool = False
+    is_locked: bool = False
 
     class Config:
         from_attributes = True

@@ -26,3 +26,4 @@ class DashboardResponse(BaseModel):
     metrics: DashboardMetrics
     trends: List[TrendPoint]
     recent_activity: List[Dict[str, Any]]
+    voucher_stats: Dict[str, Dict[str, Any]] # {"payment": {"count": 10, "amount": 5000}}

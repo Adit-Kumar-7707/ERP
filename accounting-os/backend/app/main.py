@@ -50,7 +50,7 @@ if settings.BACKEND_CORS_ORIGINS:
     )
 
 app.include_router(auth_router, prefix=f"{settings.API_V1_STR}/auth", tags=["auth"])
-app.include_router(accounting_router, prefix=f"{settings.API_V1_STR}", tags=["accounting"])
+app.include_router(accounting_router, prefix=f"{settings.API_V1_STR}/accounting", tags=["accounting"])
 app.include_router(organization_router, prefix=f"{settings.API_V1_STR}/organization", tags=["organization"])
 app.include_router(vouchers_router, prefix=f"{settings.API_V1_STR}/vouchers", tags=["vouchers"])
 app.include_router(inventory_router, prefix=f"{settings.API_V1_STR}/inventory", tags=["inventory"])

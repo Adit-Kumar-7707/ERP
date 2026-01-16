@@ -35,14 +35,24 @@ class StockItemBase(BaseModel):
     group_id: Optional[int] = None
     uom_id: Optional[int] = None
     gst_rate: float = 0.0
+    valuation_method: str = "AVG"
+    reorder_level: float = 0.0
 
 class StockItemCreate(StockItemBase):
-    pass
+    opening_quantity: float = 0.0
+    opening_value: float = 0.0
+    inventory_account_id: Optional[int] = None
+    cogs_account_id: Optional[int] = None
+    sales_account_id: Optional[int] = None
+    purchase_account_id: Optional[int] = None
 
 class StockItem(StockItemBase):
     id: int
     group: Optional[StockGroup] = None
     uom: Optional[UOM] = None
+    
+    opening_quantity: float = 0.0
+    opening_value: float = 0.0
     
     class Config:
         from_attributes = True
