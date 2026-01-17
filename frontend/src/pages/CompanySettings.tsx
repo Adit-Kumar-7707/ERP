@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { api } from "@/lib/api";
+import api from "@/api/client";
 
 interface OrganizationData {
     id: number;

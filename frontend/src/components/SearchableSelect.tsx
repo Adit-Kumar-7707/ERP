@@ -113,7 +113,9 @@ export default function SearchableSelect({ options, value, onChange, onCreate, p
         <div className={`relative ${className}`} ref={containerRef}>
             <input
                 ref={(el) => {
-                    inputRef.current = el;
+                    if (inputRef && 'current' in inputRef) {
+                        (inputRef as any).current = el;
+                    }
                     if (focusRef) focusRef(el);
                 }}
                 className="w-full bg-transparent outline-none border-b border-dashed border-gray-300 focus:border-tally-blue focus:bg-yellow-100 p-1"

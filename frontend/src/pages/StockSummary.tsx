@@ -13,7 +13,7 @@ interface StockValuationResponse {
 
 export default function StockSummary() {
     const navigate = useNavigate();
-    const { periodStart, periodEnd } = useTally();
+    const { periodEnd } = useTally();
     const [items, setItems] = useState<StockValuationResponse[] | null>(null);
 
     useEffect(() => {

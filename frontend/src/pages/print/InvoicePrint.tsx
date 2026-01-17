@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "@/api/client";
-import { useTally } from "@/context/TallyContext";
+
 
 interface PrintData {
     org: any;

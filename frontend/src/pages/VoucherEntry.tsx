@@ -8,6 +8,7 @@ import { useVoucherFocus } from "@/hooks/useVoucherFocus";
 import SearchableSelect from "@/components/SearchableSelect";
 import LedgerCreateModal from "@/components/modals/LedgerCreateModal";
 import StockItemCreateModal from "@/components/modals/StockItemCreateModal";
+import BillAllocationModal, { BillAllocation } from "@/components/modals/BillAllocationModal";
 
 // Types
 interface VoucherRow {
@@ -42,7 +43,7 @@ export default function VoucherEntry() {
     const [partyLedgerId, setPartyLedgerId] = useState<number | "">("");
     const [salesLedgerId, setSalesLedgerId] = useState<number | "">("");
 
-    import BillAllocationModal, { BillAllocation } from "@/components/modals/BillAllocationModal";
+    // Modal State
 
     // ... (existing imports)
 
@@ -55,7 +56,30 @@ export default function VoucherEntry() {
     const [activeBillRowId, setActiveBillRowId] = useState<number | null>(null);
 
     // ... (existing state)
+    // Rows State
+    const [rows, setRows] = useState<VoucherRow[]>([
+        { id: 1, type: "Dr", ledgerId: 0, amount: "", itemId: 0 }
+    ]);
 
+    // Voucher Focus Hook
+    const { register, focus, handleEnter } = useVoucherFocus();
+
+    const getFocusOrder = () => {
+        let order = ["date"];
+        if (effectiveDate) order.push("effectiveDate"); // Optional
+        if (invoiceMode === "Item") {
+            order.push("party", "salesLedger");
+            rows.forEach(r => {
+                order.push(`row-${r.id}-item`, `row-${r.id}-qty`, `row-${r.id}-rate`, `row-${r.id}-amount`);
+            });
+        } else {
+            rows.forEach(r => {
+                order.push(`row-${r.id}-ledger`, `row-${r.id}-amount`);
+            });
+        }
+        order.push("narration");
+        return order;
+    };
     const onEnter = (key: string) => {
         const order = getFocusOrder();
 
@@ -562,7 +586,7 @@ export default function VoucherEntry() {
             {showLedgerModal && (
                 <LedgerCreateModal
                     onClose={() => setShowLedgerModal(false)}
-                    onSuccess={(newId) => {
+                    onSuccess={() => {
                         refreshLedgers();
                         // Auto-select logic?
                         // Ideally we set it, but we need to know WHICH field triggered it.
@@ -573,7 +597,7 @@ export default function VoucherEntry() {
             {showItemModal && (
                 <StockItemCreateModal
                     onClose={() => setShowItemModal(false)}
-                    onSuccess={(newId) => {
+                    onSuccess={() => {
                         refreshItems();
                     }}
                 />

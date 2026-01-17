@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import api from "@/api/client";
 import { useNavigate } from "react-router-dom";
 import { useLedgers } from "@/hooks/useLedgers";
@@ -13,7 +13,7 @@ interface Ledger {
 
 export default function LedgerAlter() {
     const navigate = useNavigate();
-    const { ledgers, fetchLedgers } = useLedgers();
+    const { ledgers, refresh: fetchLedgers } = useLedgers();
     const { groups, fetchGroups } = useGroups();
 
     // Modes: 'select' | 'edit'
@@ -24,7 +24,7 @@ export default function LedgerAlter() {
     // Form State
     const [formData, setFormData] = useState<Partial<Ledger>>({});
 
-    const inputRef = useRef<HTMLInputElement>(null);
+    // const inputRef = useRef<HTMLInputElement>(null);
 
     // Initial Fetch
     useEffect(() => { fetchLedgers(); fetchGroups(); }, []);
@@ -49,10 +49,13 @@ export default function LedgerAlter() {
         return () => window.removeEventListener("keydown", handleKeyDown);
     }, [mode, filteredLedgers, selIndex, navigate]);
 
-    const handleSelect = (l: Ledger) => {
-        setFormData({ ...l });
-        setSelectedId(l.id);
+    const handleSelect = async (l: any) => {
         setMode("edit");
+        setSelectedId(l.id);
+        try {
+            const res = await api.get(`/accounting/ledgers/${l.id}`);
+            setFormData(res.data);
+        } catch (e) { alert("Failed to load"); setMode("select"); }
     };
 
     const handleSave = async () => {
@@ -161,7 +164,7 @@ export default function LedgerAlter() {
                             onChange={e => setFormData({ ...formData, group_id: parseInt(e.target.value) })}
                         >
                             <option value="" disabled>Select Group</option>
-                            {groups.map(g => (
+                            {groups.map((g: any) => (
                                 <option key={g.id} value={g.id}>{g.name}</option>
                             ))}
                         </select>

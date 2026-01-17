@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import api from "@/api/client";
 import { useNavigate } from "react-router-dom";
 import { useTally } from "@/context/TallyContext";
-import { exportToCSV, exportToJSON } from "@/utils/exportUtils";
+import { exportToCSV } from "@/utils/exportUtils";
 import { useKeyboardNavigation } from "@/hooks/useKeyboardNavigation";
 
 interface VoucherEntry {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "@/api/client";
-import { useTally } from "@/context/TallyContext";
+// import { useTally } from "@/context/TallyContext";
 
 interface BankEntry {
     id: number;
@@ -19,7 +19,7 @@ interface BankEntry {
 export default function BankReconciliation() {
     const { ledgerId } = useParams();
     const navigate = useNavigate();
-    const { periodStart, periodEnd } = useTally(); // Usually BRS is Period Agnostic (Show all pending), but filtered by period also useful.
+    // const { periodStart, periodEnd } = useTally();
 
     const [entries, setEntries] = useState<BankEntry[]>([]);
     const [ledger, setLedger] = useState<any>(null);

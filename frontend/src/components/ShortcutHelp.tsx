@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
 
 export default function ShortcutHelp() {
     const [isOpen, setIsOpen] = useState(false);
-    const location = useLocation();
+    // const location = useLocation();
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -27,8 +27,8 @@ export default function ShortcutHelp() {
     if (!isOpen) return null;
 
     // Contextual Shortcuts based on Route
-    const isVoucher = location.pathname.includes("voucher-entry");
-    const isReport = location.pathname.includes("report") || location.pathname.includes("balance-sheet") || location.pathname.includes("pl");
+    // const isVoucher = location.pathname.includes("voucher-entry");
+    // const isReport = location.pathname.includes("report");
 
     return (
         <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center backdrop-blur-sm">

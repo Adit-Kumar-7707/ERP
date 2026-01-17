@@ -25,7 +25,7 @@ export default function BillAllocationModal({ ledgerName, totalAmount, onClose, 
         amount: "",
     });
 
-    const [selectedIndex, setSelectedIndex] = useState(0); // 0=Type, 1=Name, 2=Amount
+    // const [selectedIndex, setSelectedIndex] = useState(0); // 0=Type, 1=Name, 2=Amount
     const inputRefs = useRef<(HTMLInputElement | HTMLSelectElement | null)[]>([]);
 
     // Auto-fill amount logic: Remaining Balance

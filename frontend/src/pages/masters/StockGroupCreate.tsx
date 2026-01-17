@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 export default function StockGroupCreate() {
     const navigate = useNavigate();
     const [name, setName] = useState("");
-    const [parent, setParent] = useState("");
+    const [parent] = useState("");
 
     const handleSave = async () => {
         if (!name) return alert("Name is required");

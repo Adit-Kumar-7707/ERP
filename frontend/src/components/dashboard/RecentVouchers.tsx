@@ -5,7 +5,7 @@ import {
     TrendingUp,
     ShoppingCart,
     FileSpreadsheet,
-    MoreHorizontal,
+
     ExternalLink,
 } from "lucide-react";
 import { cn } from "@/lib/utils";

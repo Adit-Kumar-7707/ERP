@@ -20,7 +20,7 @@ interface BasicMaster {
 
 export default function StockItemAlter() {
     const navigate = useNavigate();
-    const { items: startItems, fetchItems } = useStockItems(); // For selection list
+    const { items: startItems, refresh: fetchItems } = useStockItems(); // For selection list
 
     // Modes: 'select' | 'edit'
     const [mode, setMode] = useState<"select" | "edit">("select");
@@ -61,10 +61,18 @@ export default function StockItemAlter() {
         return () => window.removeEventListener("keydown", handleKeyDown);
     }, [mode, filteredItems, selIndex, navigate]);
 
-    const handleSelect = (item: StockItem) => {
-        setFormData({ ...item });
-        setSelectedId(item.id);
+    const handleSelect = async (item: StockItem) => {
         setMode("edit");
+        setSelectedId(item.id);
+
+        try {
+            const res = await api.get(`/inventory/items/${item.id}`);
+            setFormData(res.data);
+        } catch (e) {
+            console.error(e);
+            alert("Failed to load details");
+            setMode("select");
+        }
     };
 
     const handleSave = async () => {

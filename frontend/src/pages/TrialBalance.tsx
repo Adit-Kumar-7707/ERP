@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import api from "@/api/client";
 import { useNavigate } from "react-router-dom";
 import { useTally } from "@/context/TallyContext";
-import { formatCurrency } from "@/utils/format"; // Assuming this exists, else will inline
+// import { formatCurrency } from "@/utils/format";
 
 interface ReportNode {
     id: number;
@@ -42,7 +42,7 @@ export default function TrialBalance() {
             if (e.altKey && e.key === "F1") {
                 e.preventDefault();
                 // Expand All Logic could go here
-                setExpanded(prev => (Object.keys(prev).length > 0 ? {} : { "ALL": true }));
+                setExpanded((prev): Record<string, boolean> => (Object.keys(prev).length > 0 ? {} : { "ALL": true }));
             }
         };
         window.addEventListener("keydown", handleKeyDown);
