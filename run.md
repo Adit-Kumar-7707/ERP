@@ -99,4 +99,7 @@ Railway is connected to your GitHub.
 
 **Railway**:
 - If Build Fails: Check the "Build Logs" in Railway.
+- **Error: "Railpack could not determine how to build the app"**:
+  - This means Railway is looking at the root folder instead of the specific service folder.
+  - **Fix**: Go to **Settings** > **Root Directory** and set it to `/backend` (for Backend service) or `/frontend` (for Frontend service).
 - If Database connection fails: Ensure `DATABASE_URL` is set correctly in Backend variables.
