@@ -131,11 +131,7 @@ def get_stock_summary(db: Session = Depends(get_db)):
             ))
             
     return {"items": summary}
-    return {"items": summary}
 
-
-from datetime import date
-from typing import Optional
 
 def calculate_stock_value_at(db: Session, target_date: date) -> float:
     # Value = Opening Qty * Opening Rate 
