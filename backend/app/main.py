@@ -7,12 +7,12 @@ from app.modules.accounting.router import router as accounting_router
 from app.modules.vouchers.router import router as vouchers_router
 from app.modules.analytics.router import router as analytics_router
 from app.modules.inventory.router import router as inventory_router
-from app.modules.inventory.router import router as inventory_router
 from app.modules.auth.router import router as auth_router
 from app.modules.tax.router import router as tax_router
 from app.modules.reports.router import router as reports_router
-from app.modules.banking.router import router as banking_router # New import
+from app.modules.banking.router import router as banking_router
 from app.modules.audit.router import router as audit_router
+from app.modules.impex.router import router as impex_router
 import app.modules.auth.models # Ensure tables created
 
 # Database Setup (Quick Init)
@@ -30,9 +30,9 @@ app.add_middleware(
 
 app.include_router(accounting_router, prefix="/api/v1/accounting")
 app.include_router(vouchers_router, prefix="/api/v1/vouchers")
-app.include_router(analytics_router.router, prefix="/api/v1/analytics", tags=["Analytics"])
+app.include_router(analytics_router, prefix="/api/v1/analytics", tags=["Analytics"])
 app.include_router(inventory_router, prefix="/api/v1/inventory")
-app.include_router(auth_router.router, prefix="/api/v1/auth", tags=["Auth"])
+app.include_router(auth_router, prefix="/api/v1/auth", tags=["Auth"])
 app.include_router(tax_router, prefix="/api/v1")
 app.include_router(reports_router, prefix="/api/v1/reports")
 app.include_router(banking_router, prefix="/api/v1")

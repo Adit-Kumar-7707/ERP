@@ -7,6 +7,8 @@ COPY package.json package-lock.json ./
 RUN npm ci
 
 COPY . .
+ARG VITE_API_URL
+ENV VITE_API_URL=$VITE_API_URL
 RUN npm run build
 
 # Production Stage
@@ -19,5 +21,6 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
+ENV PORT=80
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD sh -c "envsubst '\$PORT' < /etc/nginx/conf.d/default.conf > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
