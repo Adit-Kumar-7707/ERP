@@ -61,29 +61,41 @@ We will use **Railway.app** because it natively supports Docker and makes connec
 #### Step 2: Deploy Backend
 1. Click **New** (or `Command + K`) > **GitHub Repo**.
 2. Select your ERP Repository.
-3. Click "Add Variables" before deploying (or go to Settings > Variables later).
-4. **Configure Variables**:
-   - `DATABASE_URL`: In the variable value box, type `${{Postgres.DATABASE_URL}}` (Railway will autocomplete this to link your DB).
+3. **IMPORTANT**: The build will initially fail. This is normal.
+4. **Click on the newly created Service card** (the distinct box on the project canvas).
+5. A set of tabs will appear (Start, Deployments, Variables, Settings, etc.). Click **Settings**.
+6. Scroll down to the **Service** section (General section).
+7. Find **Root Directory**.
+8. Enter `/backend` and press **Enter** (or click the checkmark).
+   - *This tells Railway to look for the Dockerfile in the backend folder.*
+   - *Railway will automatically restart the build.*
+7. **Configure Variables**:
+   - Go to the **Variables** tab.
+   - Click **New Variable**.
+   - `DATABASE_URL`: Type `${{Postgres.DATABASE_URL}}` (Select the autocomplete option).
    - `PORT`: `8000`
-5. **Configure Root Directory**:
-   - Go to **Settings** > **Root Directory**.
-   - Set it to `/backend`.
-6. **Generate Domain**:
+   - `SECRET_KEY`: `your_secret_key_here` (Optional but recommended).
+8. **Generate Domain**:
    - Go to **Settings** > **Networking** > **Public Networking**.
    - Click **Generate Domain**.
-   - Copy this URL (e.g., `https://backend-production.up.railway.app`). You need it for the Frontend.
+   - **Copy this URL** (e.g., `https://backend-production.up.railway.app`). You need it for Step 3.
 
 #### Step 3: Deploy Frontend
 1. Click **New** > **GitHub Repo** (Select the SAME repository again).
-2. **Configure Root Directory**:
-   - Go to **Settings** > **Root Directory**.
-   - Set it to `/frontend`.
-3. **Configure Variables**:
-   - `VITE_API_URL`: Paste the Backend URL from Step 2 (e.g., `https://backend-production.up.railway.app/api/v1`).
-     *Note: Add `/api/v1` to the end.*
-4. **Generate Domain**:
-   - Go to **Settings** > **Public Networking** > **Generate Domain**.
-5. Click **Deploy**.
+2. **IMPORTANT**: The build will initially fail.
+3. Click on the new Service card (Frontend).
+4. Go to **Settings** > **Service Section** > **Root Directory**.
+5. Enter `/frontend` and press **Enter**.
+   - *Railway will restart the build.*
+6. **Configure Variables** (Crucial):
+   - Go to **Variables**.
+   - Add `VITE_API_URL`.
+   - Value: Paste the Backend URL from Step 2 (e.g., `https://backend-production.up.railway.app/api/v1`).
+   - *Note: Ensure you add `/api/v1` to the end of the URL.*
+7. **Generate Domain**:
+   - Go to **Settings** > **Networking** > **Public Networking**.
+   - Click **Generate Domain**.
+   - Click correct link to open your live App!
 
 ### Consecutive Updates
 Railway is connected to your GitHub.
