@@ -25,7 +25,7 @@ Use this method to run the entire system (Database, Backend, Frontend) on your o
    *This may take 5-10 minutes the first time as it downloads dependencies.*
 
 4. **Access the App**:
-   - Frontend (UI): Open [http://localhost](http://localhost) in your browser.
+   - Frontend (UI): Open [http://localhost:3000](http://localhost:3000) (Updated from 80 for Mac compatibility)
    - Backend Docs: [http://localhost:8000/docs](http://localhost:8000/docs).
 
 ### 2. Consecutive Runs (Daily Usage)
