@@ -1,4 +1,4 @@
-# Deployment & Execution Guide
+# Deployment & Execution Guide (Stable)
 
 This guide covers how to run the ERP system locally (using Docker) and how to host it online (using Railway).
 
