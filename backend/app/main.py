@@ -18,7 +18,35 @@ import app.modules.auth.models # Ensure tables created
 # Database Setup (Quick Init)
 Base.metadata.create_all(bind=engine)
 
+
+@app.on_event("startup")
+def startup_event():
+    db = next(get_db())
+    try:
+        from app.modules.auth import models, security
+        # Check if admin exists
+        admin = db.query(models.User).filter(models.User.username == "admin").first()
+        if not admin:
+            print("Creating Admin User...")
+            hashed_password = security.get_password_hash("admin")
+            admin_user = models.User(
+                username="admin",
+                hashed_password=hashed_password,
+                full_name="Administrator",
+                role="admin"
+            )
+            db.add(admin_user)
+            db.commit()
+            print("Admin User Created (admin/admin)")
+        else:
+            print("Admin User already exists.")
+    except Exception as e:
+        print(f"Error seeding admin user: {e}")
+    finally:
+        db.close()
+
 app = FastAPI(title=settings.PROJECT_NAME)
+
 
 app.add_middleware(
     CORSMiddleware,
