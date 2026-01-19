@@ -16,16 +16,17 @@ from app.modules.impex.router import router as impex_router
 import app.modules.auth.models # Ensure tables created
 
 # Database Setup (Quick Init)
-Base.metadata.create_all(bind=engine)
-
-
 
 app = FastAPI(title=settings.PROJECT_NAME)
 
 @app.on_event("startup")
+
 def startup_event():
     db = next(get_db())
     try:
+        # Create Tables
+        Base.metadata.create_all(bind=engine)
+        
         from app.modules.auth import models, security
         # Check if admin exists
         admin = db.query(models.User).filter(models.User.username == "admin").first()
