@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
-from app.core.db import engine
+from app.core.db import engine, get_db
 from app.modules.accounting.models import Base
 from app.modules.accounting.router import router as accounting_router
 from app.modules.vouchers.router import router as vouchers_router
@@ -18,6 +18,9 @@ import app.modules.auth.models # Ensure tables created
 # Database Setup (Quick Init)
 Base.metadata.create_all(bind=engine)
 
+
+
+app = FastAPI(title=settings.PROJECT_NAME)
 
 @app.on_event("startup")
 def startup_event():
@@ -44,8 +47,6 @@ def startup_event():
         print(f"Error seeding admin user: {e}")
     finally:
         db.close()
-
-app = FastAPI(title=settings.PROJECT_NAME)
 
 
 app.add_middleware(
