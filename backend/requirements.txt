@@ -5,8 +5,8 @@ sqlalchemy
 pydantic
 pydantic-settings
 python-jose[cryptography]
-passlib[bcrypt]
-bcrypt==3.2.2
+passlib[argon2]
+argon2-cffi
 python-multipart
 psycopg2-binary
 alembic
